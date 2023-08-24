@@ -11,7 +11,7 @@ const {
   girisURL,
   rastgeleMetin,
   tokenYenile,
-} = require("./spotify-api/tokenIsle");
+} = require("./spotify-api/tokenIslem");
 
 const apiRouter = require("./routers/api");
 
