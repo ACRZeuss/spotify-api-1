@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Example of the Authorization Code flow with Spotify</title>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <style type="text/css">
+    .text-overflow {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 500px;
+    }
+
+    #loggedin{
+      margin-top: 50px;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div id="login">
+      <h1>Spotify Yetkilendirme</h1>
+      <a href="/giris" class="btn btn-primary">Giriş Yap</a>
+    </div>
+    <div id="loggedin">
+      <div id="user-profile">
+        <a href="/api/getProfile" class="btn btn-primary">Profil Endpoint</a>
+        <a href="/api/getCurrentSong" class="btn btn-primary">Dinlenen Şarkı Endpoint</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
