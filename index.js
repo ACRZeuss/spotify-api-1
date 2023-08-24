@@ -1,62 +1,57 @@
-
-const express = require('express');
-const cors = require('cors');
-(require('dotenv')).config();
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 
+const { client_id, client_secret, redirect_uri, refresh_token_env } = process.env;
+
 const {
-    client_id,
-    client_secret,
-    redirect_uri
-} = process.env;
+  callback,
+  girisURL,
+  rastgeleMetin,
+  tokenYenile,
+} = require("./spotify-api/tokenIslem");
 
-const { callback, girisURL, rastgeleMetin, tokenYenile } = require('./spotify-api/tokenIslem');
+const apiRouter = require("./routers/api");
 
-const apiRouter = require('./routers/api')
-
-app.use(express.static(__dirname + '/public'))
-    .use(cors())
-
+app.use(express.static(__dirname + "/public")).use(cors());
 
 const tokenYenileyici = async (req, res, next) => {
-    const { refresh_token } = req.query;
+  // const { refresh_token } = req.query;
+  const refresh_token = refresh_token_env;
 
-    if (!refresh_token)
-        return next();
+  if (!refresh_token) return next();
 
-    const yeniToken = await tokenYenile({ refresh_token })
+  const yeniToken = await tokenYenile({ refresh_token });
 
-    if (yeniToken.error)
-        return next();
+  if (yeniToken.error) return next();
 
-    req.query.access_token = yeniToken;
+  req.query.access_token = yeniToken;
 
-    next();
-}
+  next();
+};
 
-app.use('/api', tokenYenileyici, apiRouter);
+app.use("/api", tokenYenileyici, apiRouter);
 
-app.get('/giris', function (req, res) {
+app.get("/giris", function (req, res) {
+  const metin = rastgeleMetin(16);
 
-    const metin = rastgeleMetin(16);
+  res.cookie("spotify_auth_state", metin);
 
-    res.cookie('spotify_auth_state', metin);
+  const url = girisURL({ rastgeleMetin: metin });
 
-    const url = girisURL({ rastgeleMetin: metin })
-
-    res.redirect(url)
+  res.redirect(url);
 });
 
-app.get('/callback', callback);
+app.get("/callback", callback);
 
-app.get('/refresh_token', async (req, res) => {
+app.get("/refresh_token", async (req, res) => {
+  const token = await tokenYenile({
+    refresh_token: req.query.refresh_token,
+  });
 
-    const token = await tokenYenile({
-        refresh_token: req.query.refresh_token
-    });
-
-    res.send(token)
+  res.send(token);
 });
 
-app.listen(80, () => console.log('80 Portu Dinleniyor.'));
+app.listen(80, () => console.log("80 Portu Dinleniyor."));
