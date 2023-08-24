@@ -30,7 +30,7 @@ const tokenYenileyici = async (req, res, next) => {
     if (yeniToken.error)
         return next();
 
-    req.query.access_token = yeniToken;
+    req.query.access_token = yeniToke;
 
     next();
 }
