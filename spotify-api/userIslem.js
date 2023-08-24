@@ -6,7 +6,7 @@ const fetch = require('node-fetch')
  * @return {object} Çalan Şarkı Objesini Döndürür.
  */
 const getCurrentSong = async (access_token) => {
-    const istek = await fetch('https://api.spotify.com/v1/me/player/currently-playing',
+    const istek = await fetch('https://api.spotify.com/v1/me/player/currently-playin',
         {
             headers: { "Authorization": "Bearer " + access_token }
         })
